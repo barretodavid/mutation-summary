@@ -3,9 +3,35 @@ import MutationSummary from 'mutation-summary';
 const container = document.querySelector('#container');
 const createElementButton = document.querySelector('#create-element');
 const innerHTMLButton = document.querySelector('#inner-html');
+const clearButton = document.querySelector('#clear');
+
+createElementButton.addEventListener('click', () => {
+  container.innerHTML = '';
+  const list = document.createElement('ul');
+  for(let i=0; i<3; i++) {
+    const item = document.createElement('li');
+    item.textContent = `Item ${ i + 1 }`
+    list.appendChild(item);
+  }
+  container.appendChild(list);
+});
+
+innerHTMLButton.addEventListener('click', () => {
+  container.innerHTML = `
+    <ul>
+      <li>Item A</li>
+      <li>Item B</li>
+      <li>Item C</li>
+    </ul>
+  `;
+});
+
+clearButton.addEventListener('click', () => {
+  container.innerHTML = '';
+});
 
 const handleUpdateBody = ([summary]) => {
-  console.log(summary.added);
+  console.log('Added Elements', summary.added);
 };
 
 const observer = new MutationSummary({
@@ -13,20 +39,4 @@ const observer = new MutationSummary({
   queries: [{
     element: '*'
   }]
-});
-
-createElementButton.addEventListener('click', () => {
-  const childNode = document.createElement('h2');
-  childNode.textContent = 'Upa';
-  container.appendChild(childNode);
-});
-
-innerHTMLButton.addEventListener('click', () => {
-  container.innerHTML = `
-    <ul>
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
-    </ul>
-  `;
 });
